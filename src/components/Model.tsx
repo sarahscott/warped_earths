@@ -23,6 +23,8 @@ const Model = ({ model }: { model: Model }) => {
         auto-rotate
         autoplay
         animation-name={model.animation}
+        poster="/poster.webp"
+        loading="eager"
       >
         {/* 
 // @ts-ignore */}
