@@ -1,10 +1,11 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { Canvas, useLoader } from "@react-three/fiber";
+import { CameraProps, Canvas, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import React, { Suspense } from "react";
-import { OrbitControls } from "@react-three/drei";
+import React, { Suspense, useRef } from "react";
+import { CameraControls, TrackballControls } from "@react-three/drei";
 
 import MapboxGlobe from "./components/MapboxGlobe";
+import { PerspectiveCamera } from "three";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -55,12 +56,15 @@ function Scene() {
 
   return (
     <Suspense fallback={null}>
-      <primitive object={glb.scene} position={[0, 0, 5]} scale={0.5} />
+      <primitive object={glb.scene} position={[0, 0, 5]} scale={1} />
     </Suspense>
   );
 }
 
 export default function Home() {
+  const camera = new PerspectiveCamera(50, 1, 0.1, 3000);
+  camera.position.z = 40;
+
   return (
     <>
       <GlobalStyle />
@@ -70,8 +74,8 @@ export default function Home() {
         </GlobeContainer>
         <EntryContainer>
           <ModelContainer>
-            <Canvas camera={{ position: [0, 0, 10], zoom: 0.5 }}>
-              <OrbitControls enableZoom={false} />
+            <Canvas camera={camera}>
+              <TrackballControls noZoom />
               <ambientLight intensity={0.5} />
               <spotLight intensity={0.8} position={[300, 300, 400]} />
               <Suspense fallback={<Box />}>
