@@ -11,6 +11,12 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: black;
   }
+
+  model-viewer {
+  height: 100%;
+  width: 100%;
+}
+
 `;
 
 const Container = styled.div`
@@ -38,7 +44,6 @@ const EntryContainer = styled.div`
 `;
 
 const ModelContainer = styled.div`
-  /* height: 400px; */
   width: 100%;
 `;
 
@@ -51,6 +56,7 @@ function Box() {
   );
 }
 
+// threejs implementation; dormant for now
 function Scene() {
   const camera = new PerspectiveCamera(50, 1, 0.1, 3000);
   camera.position.z = 40;
@@ -69,6 +75,8 @@ function Scene() {
 }
 
 export default function Home() {
+  const modelRef = useRef();
+
   return (
     <>
       <GlobalStyle />
@@ -78,7 +86,24 @@ export default function Home() {
         </GlobeContainer>
         <EntryContainer>
           <ModelContainer>
-            <Scene />
+            {/* 
+// @ts-ignore */}
+            <model-viewer
+              src="./earthBall.glb"
+              alt="A rock"
+              disable-zoom
+              interaction-prompt="none"
+              camera-controls
+              ar
+              auto-rotate
+              ar-modes="webxr"
+              ref={(ref: undefined) => {
+                modelRef.current = ref;
+              }}
+            >
+              {/* 
+// @ts-ignore */}
+            </model-viewer>
           </ModelContainer>
         </EntryContainer>
       </Container>
