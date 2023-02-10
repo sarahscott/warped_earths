@@ -38,7 +38,7 @@ const EntryContainer = styled.div`
 `;
 
 const ModelContainer = styled.div`
-  height: 400px;
+  /* height: 400px; */
   width: 100%;
 `;
 
@@ -52,19 +52,23 @@ function Box() {
 }
 
 function Scene() {
+  const camera = new PerspectiveCamera(50, 1, 0.1, 3000);
+  camera.position.z = 40;
   const glb = useLoader(GLTFLoader, "/earthBall.glb");
 
   return (
-    <Suspense fallback={null}>
-      <primitive object={glb.scene} position={[0, 0, 5]} scale={1} />
-    </Suspense>
+    <Canvas camera={camera}>
+      <TrackballControls noZoom />
+      <ambientLight intensity={0.5} />
+      <spotLight intensity={0.8} position={[300, 300, 400]} />
+      <Suspense fallback={<Box />}>
+        <primitive object={glb.scene} position={[0, 0, 5]} scale={0.5} />
+      </Suspense>
+    </Canvas>
   );
 }
 
 export default function Home() {
-  const camera = new PerspectiveCamera(50, 1, 0.1, 3000);
-  camera.position.z = 40;
-
   return (
     <>
       <GlobalStyle />
@@ -74,14 +78,7 @@ export default function Home() {
         </GlobeContainer>
         <EntryContainer>
           <ModelContainer>
-            <Canvas camera={camera}>
-              <TrackballControls noZoom />
-              <ambientLight intensity={0.5} />
-              <spotLight intensity={0.8} position={[300, 300, 400]} />
-              <Suspense fallback={<Box />}>
-                <Scene />
-              </Suspense>
-            </Canvas>
+            <Scene />
           </ModelContainer>
         </EntryContainer>
       </Container>
