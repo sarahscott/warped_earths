@@ -1,12 +1,14 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { CameraProps, Canvas, useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { CameraControls, TrackballControls } from "@react-three/drei";
 
+import Model from "./components/Model";
 import MapboxGlobe from "./components/MapboxGlobe";
 import { PerspectiveCamera } from "three";
 import data from "./data";
+import content from "./content";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -14,16 +16,41 @@ const GlobalStyle = createGlobalStyle`
   }
 
   model-viewer {
-  width: 100%;
-  height: 700px;
-}
+    width: 100%;
+    height: 700px;
+  }
+`;
 
+const Header = styled.header`
+  color: white;
+  font-size: 4rem;
+  /* position: sticky; */
+  padding: 1.5rem 0 0 0;
+  font-family: "Inter", sans-serif;
+  /* font-family: "Righteous", cursive; */
+  font-weight: bold;
 `;
 
 const Container = styled.div`
   display: flex;
   position: relative;
   height: 99vh;
+  visibility: visible;
+
+  @media screen and (max-width: 700px) {
+    visibility: hidden;
+  }
+`;
+
+const Disclaimer = styled.h1`
+  font-size: 6rem;
+  font-family: "Righteous", cursive;
+  color: white;
+  /* visibility: hidden;
+
+  @media screen and (max-width: 700px) {
+    visibility: visible;
+  } */
 `;
 
 const GlobeContainer = styled.div`
@@ -44,47 +71,85 @@ const RightSide = styled.div`
   top: 0;
   bottom: 0;
   width: 50%;
-  display: flex;
   overflow: scroll;
   overflow-x: hidden;
   word-wrap: break-word;
+  padding-bottom: 4rem;
 `;
 
 const EntryContainer = styled.div`
   width: 100%;
-`;
-
-const ModelContainer = styled.div`
-  /* background-color: darkblue; */
+  padding-right: 1rem;
 `;
 
 const Heading = styled.h1`
-  color: white;
-  font-size: 3rem;
+  color: orangered;
+  font-size: 4rem;
   width: 100%;
   text-transform: uppercase;
   font-family: "Inter", sans-serif;
+  margin-bottom: 0.5rem;
+  /* font-family: "Righteous", cursive; */
   font-weight: bold;
+  /* margin: 6rem 0 0; */
+  padding: 1.5rem 0 0;
 `;
 
 const TalkTitle = styled.h2`
   color: white;
+  margin: 0;
   font-family: "Inter", sans-serif;
   text-transform: uppercase;
 `;
 
+const blink = keyframes`
+    0% {
+      color: #00c8ff;
+    }
+
+    60% {
+      color: #0091ff;
+    }
+
+    100% {
+      color: #00ffff;
+    }
+
+`;
+
 const Description = styled.h3`
   color: orangered;
-  font-size: 2rem;
+
+  font-size: 2.4rem;
   text-transform: uppercase;
   font-family: "Inter", sans-serif;
+  text-align: left;
+  margin: 0;
+  animation: ${blink} 5s infinite;
+  white-space: pre-wrap;
 `;
 
 const BigQuote = styled.p`
   color: white;
   font-size: 2rem;
   width: 100%;
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif; */
+  font-family: "Cormorant", serif;
+
+  /* font-family: "Cardo", serif; */
+`;
+
+const Content = styled.p`
+  color: white;
+  font-size: 2rem;
+  width: 100%;
+  white-space: pre-wrap;
+  margin-top: 1.5rem;
+
+  margin-bottom: 6rem;
+
+  /* font-family: "Inter", sans-serif; */
+  font-family: "Cormorant", serif;
 
   /* font-family: "Cardo", serif; */
 `;
@@ -93,37 +158,31 @@ const Anchor = styled.h1`
   visibility: hidden;
 `;
 
-function Box() {
-  return (
-    <mesh>
-      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" transparent opacity={0.5} />
-    </mesh>
-  );
-}
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
 
-// threejs implementation; dormant for now
-function Scene() {
-  const camera = new PerspectiveCamera(50, 1, 0.1, 3000);
-  camera.position.z = 40;
-  const glb = useLoader(GLTFLoader, "/earthBall.glb");
+  return { width, height };
+};
 
-  return (
-    <Canvas camera={camera}>
-      <TrackballControls noZoom />
-      <ambientLight intensity={0.5} />
-      <spotLight intensity={0.8} position={[300, 300, 400]} />
-      <Suspense fallback={<Box />}>
-        <primitive object={glb.scene} position={[0, 0, 5]} scale={0.5} />
-      </Suspense>
-    </Canvas>
+const useWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
   );
-}
+
+  useEffect(() => {
+    const handleResize = () => setWindowDimensions(getWindowDimensions());
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  });
+
+  return windowDimensions;
+};
 
 export default function Home() {
-  const modelRef = useRef(null);
-
   const refs = React.useRef<any>([]);
+  const { height, width } = useWindowDimensions();
 
   const handleMarkerClick = (idx: number) => {
     refs.current[idx].scrollIntoView({ behavior: "smooth" });
@@ -132,54 +191,40 @@ export default function Home() {
   return (
     <>
       <GlobalStyle />
-      <Container>
-        <GlobeContainer>
-          <MapboxGlobe onMarkerClick={handleMarkerClick} />
-        </GlobeContainer>
-        <RightSide>
-          <EntryContainer>
-            {data.map((presenter, idx) => (
-              <>
-                <Anchor
-                  ref={(el) => {
-                    refs.current[idx] = el;
-                  }}
-                ></Anchor>
-                <Heading>{presenter.name}</Heading>
-                <TalkTitle>
-                  <i>{presenter.title}</i>
-                </TalkTitle>
-                <Description>{presenter.description}</Description>
-                {presenter.quotes && (
-                  <BigQuote>"{presenter.quotes[0]}"</BigQuote>
-                )}
-                <ModelContainer>
-                  {/* annoying but required because typescript doesn't recognize model-viewer
-// @ts-ignore */}
-                  <model-viewer
-                    src={`./${presenter.globe.file}`}
-                    alt="Earth Ball"
-                    disable-zoom
-                    interaction-prompt="none"
-                    field-of-view="45deg"
-                    camera-controls
-                    disable-tap
-                    auto-rotate
-                    autoplay
-                    // animation-name="Key.001Action.003"
-                    ref={(ref: any) => {
-                      modelRef.current = ref;
+      {width < 800 ? (
+        <Disclaimer>{`The ${content.title} experience requires a wider screen`}</Disclaimer>
+      ) : (
+        <Container>
+          <GlobeContainer>
+            <MapboxGlobe onMarkerClick={handleMarkerClick} />
+          </GlobeContainer>
+          <RightSide>
+            <EntryContainer>
+              <Header>{content.title}</Header>
+              <Content>{content.intro}</Content>
+              {data.map((presenter, idx) => (
+                <>
+                  <Anchor
+                    ref={(el) => {
+                      refs.current[idx] = el;
                     }}
-                  >
-                    {/* 
-// @ts-ignore */}
-                  </model-viewer>
-                </ModelContainer>
-              </>
-            ))}
-          </EntryContainer>
-        </RightSide>
-      </Container>
+                  ></Anchor>
+                  <Heading>{presenter.name}</Heading>
+                  <TalkTitle>
+                    <i>{presenter.title}</i>
+                  </TalkTitle>
+                  <Model model={presenter.globe} />
+
+                  <Description>{presenter.description}</Description>
+                  {presenter.quotes && (
+                    <BigQuote>"{presenter.quotes[0]}"</BigQuote>
+                  )}
+                </>
+              ))}
+            </EntryContainer>
+          </RightSide>
+        </Container>
+      )}
     </>
   );
 }

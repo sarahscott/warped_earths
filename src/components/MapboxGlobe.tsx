@@ -18,6 +18,10 @@ const MapboxGlobe = ({
       maxZoom={zoom}
       minZoom={zoom}
       mapStyle="mapbox://styles/mapbox/satellite-v9"
+      initialViewState={{
+        longitude: -122.4,
+        latitude: 37.8,
+      }}
     >
       {data.map((presenter, idx) => {
         return (
@@ -28,7 +32,8 @@ const MapboxGlobe = ({
             anchor="bottom"
             onClick={() => onMarkerClick?.(idx)}
           >
-            <img src="/horse.png" />
+            {/* <img src={`/${presenter.icon}`} /> */}
+            <img src="/triangle.png" width={20} />
           </Marker>
         );
       })}
