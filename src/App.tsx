@@ -133,7 +133,7 @@ const Description = styled.h3`
   white-space: pre-wrap;
   color: white;
   position: absolute;
-  top: 70%;
+  top: 65%;
   z-index: -1;
   font-weight: lighter;
 `;
