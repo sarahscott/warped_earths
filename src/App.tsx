@@ -79,7 +79,6 @@ const RightSide = styled.div`
 
 const EntryContainer = styled.div`
   width: 100%;
-  padding-right: 1rem;
 `;
 
 const Heading = styled.h1`
@@ -118,23 +117,26 @@ const blink = keyframes`
 `;
 
 const Description = styled.h3`
-  color: orangered;
-
   font-size: 2.4rem;
   text-transform: uppercase;
   font-family: "Inter", sans-serif;
   text-align: left;
   margin: 0;
-  animation: ${blink} 5s infinite;
+  /* animation: ${blink} 5s infinite; */
   white-space: pre-wrap;
+  color: white;
 `;
 
 const BigQuote = styled.p`
   color: white;
-  font-size: 2rem;
+  font-size: 1.5rem;
   width: 100%;
   /* font-family: "Inter", sans-serif; */
   font-family: "Cormorant", serif;
+  border: 3px solid;
+  border-color: #ff3700;
+  padding: 1rem;
+  box-sizing: border-box;
 
   /* font-family: "Cardo", serif; */
 `;
@@ -192,7 +194,7 @@ export default function Home() {
     <>
       <GlobalStyle />
       {width < 800 ? (
-        <Disclaimer>{`The ${content.title} experience requires a wider screen`}</Disclaimer>
+        <Disclaimer>{`The Warped Earth Experience requires a wider screen`}</Disclaimer>
       ) : (
         <Container>
           <GlobeContainer>
@@ -200,7 +202,7 @@ export default function Home() {
           </GlobeContainer>
           <RightSide>
             <EntryContainer>
-              <Header>{content.title}</Header>
+              {/* <Header>{content.title}</Header> */}
               <Content>{content.intro}</Content>
               {data.map((presenter, idx) => (
                 <>
@@ -216,9 +218,10 @@ export default function Home() {
                   <Model model={presenter.globe} />
 
                   <Description>{presenter.description}</Description>
-                  {presenter.quotes && (
-                    <BigQuote>"{presenter.quotes[0]}"</BigQuote>
-                  )}
+                  {presenter.quotes &&
+                    presenter.quotes.map((quote) => (
+                      <BigQuote>"{quote}"</BigQuote>
+                    ))}
                 </>
               ))}
             </EntryContainer>

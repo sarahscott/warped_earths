@@ -2,6 +2,13 @@ import Map, { Marker } from "react-map-gl";
 import { useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import data from "../data";
+import styled from "styled-components";
+
+const Label = styled.p`
+  color: white;
+  text-align: center;
+  font-family: "Inter";
+`;
 
 const MapboxGlobe = ({
   onMarkerClick,
@@ -32,7 +39,7 @@ const MapboxGlobe = ({
             anchor="bottom"
             onClick={() => onMarkerClick?.(idx)}
           >
-            {/* <img src={`/${presenter.icon}`} /> */}
+            <Label>{presenter.name}</Label>
             <img src="/triangle.png" width={20} />
           </Marker>
         );
