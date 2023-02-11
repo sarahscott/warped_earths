@@ -86,7 +86,7 @@ const EntryContainer = styled.div`
 `;
 
 const Heading = styled.h1`
-  color: orangered;
+  color: rgb(26, 236, 131);
   font-size: 4rem;
   width: 100%;
   text-transform: uppercase;
@@ -97,6 +97,7 @@ const Heading = styled.h1`
   /* margin: 6rem 0 0; */
   padding-top: 1.5rem;
   margin: 20rem 0 0;
+  /* font-family: "Cardo", serif; */
 `;
 
 const TalkTitle = styled.h2`
@@ -130,6 +131,9 @@ const Description = styled.h3`
   /* animation: ${blink} 5s infinite; */
   white-space: pre-wrap;
   color: white;
+  position: absolute;
+  top: 70%;
+  z-index: -1;
 `;
 
 const BigQuote = styled.p`
@@ -139,9 +143,10 @@ const BigQuote = styled.p`
   /* font-family: "Inter", sans-serif; */
   font-family: "Cormorant", serif;
   border: 3px solid;
-  border-color: #ff3700;
+  border-color: rgb(26, 236, 131);
   padding: 1rem;
   box-sizing: border-box;
+  margin-top: 0;
 
   /* font-family: "Cardo", serif; */
 `;
@@ -159,6 +164,10 @@ const Content = styled.p`
   font-family: "Cormorant", serif;
 
   /* font-family: "Cardo", serif; */
+`;
+
+const ModelContainer = styled.div`
+  position: relative;
 `;
 
 const Anchor = styled.h1`
@@ -221,9 +230,11 @@ export default function Home() {
                   <TalkTitle>
                     <i>{presenter.title}</i>
                   </TalkTitle>
-                  <Model model={presenter.globe} />
+                  <ModelContainer>
+                    <Model model={presenter.globe} />
+                    <Description>{presenter.description}</Description>
+                  </ModelContainer>
 
-                  <Description>{presenter.description}</Description>
                   {presenter.quotes &&
                     presenter.quotes.map((quote) => (
                       <BigQuote>"{quote}"</BigQuote>
