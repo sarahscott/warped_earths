@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
 
   model-viewer {
     width: 100%;
-    height: 700px;
+    height: 650px;
   }
 `;
 
@@ -105,6 +105,7 @@ const TalkTitle = styled.h2`
   margin: 0;
   font-family: "Inter", sans-serif;
   text-transform: uppercase;
+  font-weight: normal;
 `;
 
 const blink = keyframes`
@@ -134,6 +135,7 @@ const Description = styled.h3`
   position: absolute;
   top: 70%;
   z-index: -1;
+  font-weight: lighter;
 `;
 
 const BigQuote = styled.p`
