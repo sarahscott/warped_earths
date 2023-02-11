@@ -91,7 +91,8 @@ const Heading = styled.h1`
   /* font-family: "Righteous", cursive; */
   font-weight: bold;
   /* margin: 6rem 0 0; */
-  padding: 1.5rem 0 0;
+  padding-top: 1.5rem;
+  margin: 20rem 0 0;
 `;
 
 const TalkTitle = styled.h2`
@@ -206,12 +207,13 @@ export default function Home() {
               <Content>{content.intro}</Content>
               {data.map((presenter, idx) => (
                 <>
-                  <Anchor
+                  <Heading
                     ref={(el) => {
                       refs.current[idx] = el;
                     }}
-                  ></Anchor>
-                  <Heading>{presenter.name}</Heading>
+                  >
+                    {presenter.name}
+                  </Heading>
                   <TalkTitle>
                     <i>{presenter.title}</i>
                   </TalkTitle>
