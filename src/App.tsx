@@ -149,6 +149,7 @@ const BigQuote = styled.p`
   padding: 1rem;
   box-sizing: border-box;
   margin-top: 0;
+  font-weight: lighter;
 
   /* font-family: "Cardo", serif; */
 `;
