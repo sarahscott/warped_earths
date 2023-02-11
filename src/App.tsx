@@ -143,14 +143,14 @@ const BigQuote = styled.p`
   font-size: 1.5rem;
   width: 100%;
   /* font-family: "Inter", sans-serif; */
-  font-family: "Cormorant", serif;
+  /* font-family: "Cormorant", serif; */
   border: 3px solid;
   border-color: rgb(26, 236, 131);
   padding: 1rem;
   box-sizing: border-box;
   margin-top: 0;
 
-  /* font-family: "Cardo", serif; */
+  font-family: "Cardo", serif;
 `;
 
 const Content = styled.p`
