@@ -140,9 +140,9 @@ const Description = styled.h3`
 
 const BigQuote = styled.p`
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   width: 100%;
-  /* font-family: "Inter", sans-serif; */
+  font-family: "Inter", sans-serif;
   /* font-family: "Cormorant", serif; */
   border: 3px solid;
   border-color: rgb(26, 236, 131);
@@ -150,7 +150,7 @@ const BigQuote = styled.p`
   box-sizing: border-box;
   margin-top: 0;
 
-  font-family: "Cardo", serif;
+  /* font-family: "Cardo", serif; */
 `;
 
 const Content = styled.p`
