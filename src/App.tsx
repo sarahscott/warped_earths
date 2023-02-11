@@ -75,6 +75,10 @@ const RightSide = styled.div`
   overflow-x: hidden;
   word-wrap: break-word;
   padding-bottom: 4rem;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const EntryContainer = styled.div`
